@@ -293,35 +293,35 @@ export const site = {
       recruiter:
         "Led Fall Kickoff 2024, the SFSS's first large welcome-back concert at SFU in about five years: event plan, tiered ticketing, sponsorship, security and campus comms. 784 tickets sold the day before the show.",
       icon: "🎤",
-      photo: "fall-kickoff-2024",
+      // photo: "fall-kickoff-2024", // TODO(chitransh): add /public/photos/fall-kickoff-2024.jpg, then uncomment
     },
     {
       title: "SFSS VP events & student affairs",
       polaroid: "2024–25. club nights, munchie mondays, diwali, holi, the works.",
       recruiter: "Elected VP Events & Student Affairs, Simon Fraser Student Society (May 2024 – Apr 2025).",
       icon: "🪩",
-      photo: "sfss-vp-events",
+      // photo: "sfss-vp-events", // TODO(chitransh): add /public/photos/sfss-vp-events.jpg, then uncomment
     },
     {
       title: "back 2 school 2025",
       polaroid: "ran \"SFU's biggest welcome back party\" as VP events at the forum.",
       recruiter: "VP Events, The Forum at SFU (Jul – Dec 2025). Led the 4th annual Back 2 School party.",
       icon: "🎉",
-      photo: "back-2-school-2025",
+      // photo: "back-2-school-2025", // TODO(chitransh): add /public/photos/back-2-school-2025.jpg, then uncomment
     },
     {
       title: "TEDxSFU",
       polaroid: "event production director, 2023.",
       recruiter: "Event Production Director, TEDxSFU (Aug – Nov 2023).",
       icon: "🎙️",
-      photo: "tedxsfu",
+      // photo: "tedxsfu", // TODO(chitransh): add /public/photos/tedxsfu.jpg, then uncomment
     },
     {
       title: "indian student federation",
       polaroid: "co-president for 2+ years. now an advisor.",
       recruiter: "Co-President, Indian Student Federation at SFU (Dec 2021 – Apr 2024); Advisor since May 2025.",
       icon: "🪔",
-      photo: "indian-student-federation",
+      // photo: "indian-student-federation", // TODO(chitransh): add /public/photos/indian-student-federation.jpg, then uncomment
     },
     {
       title: "right now",
@@ -329,7 +329,7 @@ export const site = {
       recruiter:
         "Project Manager, SFU Open Source Development Club (since Jan 2026). Fellow, Maple Leaf Venture Club (since Jul 2026).",
       icon: "🧭",
-      photo: "right-now",
+      // photo: "right-now", // TODO(chitransh): add /public/photos/right-now.jpg, then uncomment
     },
   ] satisfies Leadership[],
 

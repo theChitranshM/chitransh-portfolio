@@ -1,14 +1,24 @@
-import { site } from "@/content/site";
+import { ExperienceShell } from "@/components/ExperienceShell";
+import { Hero } from "@/components/chapters/Hero";
+import { Origin } from "@/components/chapters/Origin";
+import { Ticket } from "@/components/chapters/Ticket";
+import { Work } from "@/components/chapters/Work";
+import { Receipt } from "@/components/chapters/Receipt";
+import { Events } from "@/components/chapters/Events";
+import { Twin } from "@/components/chapters/Twin";
+import { Night } from "@/components/chapters/Night";
 
 export default function Home() {
   return (
-    <main className="flex min-h-dvh flex-col justify-center px-6">
-      <p className="hud-label text-crema">{site.hero.kicker}</p>
-      <h1 className="font-display text-[clamp(56px,12vw,168px)] leading-[0.9]">
-        {site.hero.titleLine1}
-        <br />
-        <em>{site.hero.titleLine2}</em>
-      </h1>
-    </main>
+    <ExperienceShell>
+      <Hero />
+      <Origin />
+      <Ticket />
+      <Work />
+      <Receipt />
+      <Events />
+      <Twin />
+      <Night />
+    </ExperienceShell>
   );
 }

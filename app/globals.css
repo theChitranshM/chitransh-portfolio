@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* desktop/landscape layout: text beside the subject. default is portrait: text in the bottom 40% */
+@custom-variant wide (@media (orientation: landscape) and (min-width: 768px));
+@custom-variant fine (@media (hover: hover) and (pointer: fine));
+
 /* palette (mirrored in lib/palette.ts for three.js) */
 :root {
   --espresso: #140d09;
@@ -26,6 +30,7 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-display: var(--font-instrument-serif);
+  --font-hand: var(--font-caveat), "Comic Sans MS", cursive;
 }
 
 html {
@@ -136,4 +141,92 @@ html.lenis body {
   .print-avoid-break {
     break-inside: avoid;
   }
+}
+
+/* thermal receipt paper */
+.receipt-paper {
+  background-color: #f3e6d0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='p'><feTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='2'/><feColorMatrix values='0 0 0 0 0.3  0 0 0 0 0.2  0 0 0 0 0.1  0 0 0 0.09 0'/></filter><rect width='100%' height='100%' filter='url(%23p)'/></svg>");
+  -webkit-mask: conic-gradient(from 135deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / 12px 6px repeat-x,
+    linear-gradient(#000 0 0) top / 100% calc(100% - 6px) no-repeat;
+  mask: conic-gradient(from 135deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / 12px 6px repeat-x,
+    linear-gradient(#000 0 0) top / 100% calc(100% - 6px) no-repeat;
+}
+.receipt-line {
+  animation: receipt-in 0.18s ease-out both;
+}
+@keyframes receipt-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes eq {
+  0%,
+  100% {
+    transform: scaleY(0.4);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+.toast-in {
+  animation: toast-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.98);
+  }
+}
+
+/* custom cursor on mouse devices only; inputs keep their caret */
+html.has-cursor,
+html.has-cursor * {
+  cursor: none !important;
+}
+html.has-cursor input,
+html.has-cursor textarea {
+  cursor: text !important;
+}
+
+.fixbro {
+  animation: fixbro 1.6s ease both;
+}
+@keyframes fixbro {
+  0% {
+    opacity: 0;
+  }
+  10%,
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.fixbro-bubble {
+  animation: bubble-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes bubble-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.92);
+  }
+}
+
+/* reel mode: nothing but the scene */
+html.reel-mode {
+  scrollbar-width: none;
+}
+html.reel-mode::-webkit-scrollbar {
+  display: none;
 }

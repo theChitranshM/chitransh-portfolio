@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
+import { Caveat, Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { site } from "@/content/site";
 import { siteUrl } from "@/lib/siteUrl";
@@ -13,6 +13,8 @@ const instrumentSerif = Instrument_Serif({
   weight: "400",
   style: ["normal", "italic"],
 });
+
+const caveat = Caveat({ variable: "--font-caveat", subsets: ["latin"], weight: "500", preload: false });
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -56,7 +58,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} ${caveat.variable} antialiased`}
     >
       <body>
         <a
@@ -65,6 +67,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           skip to recruiter mode
         </a>
+        <noscript
+          dangerouslySetInnerHTML={{
+            __html:
+              '<style>.js-only{display:none!important}</style><p style="position:fixed;bottom:12px;left:12px;right:12px;z-index:60;padding:10px 14px;border-radius:12px;background:#140D09;color:#E9C9A1;font:13px ui-monospace,monospace">javascript is off, so no 3D tonight. <a href="/recruiter" style="color:#9CFF6E">recruiter mode</a> works great without it.</p>',
+          }}
+        />
         {children}
         <div className="grain" aria-hidden="true" />
         <script
