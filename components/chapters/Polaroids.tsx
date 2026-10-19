@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { createPortal } from "react-dom";
 import { site, type Leadership } from "@/content/site";
 import { stopScroll } from "@/lib/scroll";
 import { useStore } from "@/lib/store";
@@ -89,12 +90,12 @@ export function Polaroids() {
         ))}
       </ul>
 
-      {item && open !== null && (
+      {item && open !== null && createPortal(
         <div
           role="dialog"
           aria-modal="true"
           aria-label={item.title}
-          className="pointer-events-auto fixed inset-0 z-[45] flex items-center justify-center bg-espresso/80 p-6 backdrop-blur-sm"
+          className="pointer-events-auto fixed inset-0 z-[48] flex items-center justify-center bg-espresso/80 p-6 backdrop-blur-sm"
           onClick={() => setOpen(null)}
         >
           <figure
@@ -117,7 +118,8 @@ export function Polaroids() {
               close ✕
             </button>
           </figure>
-        </div>
+        </div>,
+        document.body,
       )}
     </>
   );
