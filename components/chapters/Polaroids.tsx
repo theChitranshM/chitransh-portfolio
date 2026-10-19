@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { site, type Leadership } from "@/content/site";
 import { stopScroll } from "@/lib/scroll";
+import { useStore } from "@/lib/store";
 
 const tilts = [-3, 2, -1.5, 2.5, -2, 1.5];
 const gradients = [
@@ -27,8 +28,29 @@ function Photo({ item, index, big = false }: { item: Leadership; index: number; 
   );
 }
 
+/** desktop: the 3D wall is the polaroid wall; these are its keyboard-friendly buttons */
+export function PolaroidChips() {
+  const setOpen = useStore((s) => s.setPolaroid);
+  return (
+    <ul className="mt-6 hidden flex-wrap gap-2 wide:flex" data-reveal aria-label="open a polaroid">
+      {site.leadership.map((l, i) => (
+        <li key={l.title}>
+          <button
+            type="button"
+            onClick={() => setOpen(i)}
+            className="rounded-full border border-milk/25 bg-espresso/40 px-3 py-1.5 font-mono text-[11.5px] text-milk/85 transition-colors hover:border-agent hover:text-agent"
+          >
+            {l.icon} {l.title}
+          </button>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 export function Polaroids() {
-  const [open, setOpen] = useState<number | null>(null);
+  const open = useStore((s) => s.polaroid);
+  const setOpen = useStore((s) => s.setPolaroid);
 
   useEffect(() => {
     if (open === null) return;
@@ -39,7 +61,7 @@ export function Polaroids() {
       stopScroll(false);
       window.removeEventListener("keydown", onKey);
     };
-  }, [open]);
+  }, [open, setOpen]);
 
   const item = open !== null ? site.leadership[open] : null;
 
@@ -47,7 +69,7 @@ export function Polaroids() {
     <>
       <ul
         data-lenis-prevent
-        className="pointer-events-auto flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-6 pt-3 no-scrollbar wide:grid wide:grid-cols-3 wide:gap-5 wide:overflow-visible wide:p-0"
+        className="pointer-events-auto flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-6 pt-3 no-scrollbar wide:hidden"
         aria-label="events and leadership"
       >
         {site.leadership.map((l, i) => (

@@ -52,6 +52,8 @@ type State = {
   fixBro: number;
   confetti: number;
   sleepy: boolean;
+  /** index of the enlarged polaroid, if any */
+  polaroid: number | null;
 
   setScroll: (progress: number, chapter: number, chapterFloat: number) => void;
   refill: () => void;
@@ -71,6 +73,7 @@ type State = {
   setTooltip: (t: { id: string; text: string } | null) => void;
   waveRobot: () => void;
   triggerFixBro: () => void;
+  setPolaroid: (i: number | null) => void;
 };
 
 let toastId = 0;
@@ -99,6 +102,7 @@ export const useStore = create<State>((set, get) => ({
   fixBro: 0,
   confetti: 0,
   sleepy: false,
+  polaroid: null,
 
   setScroll: (progress, chapter, chapterFloat) => {
     const s = get();
@@ -211,6 +215,7 @@ export const useStore = create<State>((set, get) => ({
     set({ robotWave: Date.now(), tooltip: { id: "robot", text: site.origin.robotClick } });
     sound.play("beep");
   },
+  setPolaroid: (i) => set({ polaroid: i }),
   triggerFixBro: () => {
     set({ fixBro: Date.now() });
     get().unlock("prompt-engineer");

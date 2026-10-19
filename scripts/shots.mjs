@@ -9,10 +9,11 @@ const query = process.argv[4] ?? "?quality=high";
 mkdirSync(out, { recursive: true });
 
 const chapters = ["hero", "origin", "ticket", "work", "receipt", "events", "twin", "night"];
+const only = process.env.SIZES?.split(",");
 const sizes = [
   { name: "mobile", width: 390, height: 844, mobile: true },
   { name: "desktop", width: 1440, height: 900, mobile: false },
-];
+].filter((s) => !only || only.includes(s.name));
 
 const browser = await chromium.launch({
   executablePath: "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
