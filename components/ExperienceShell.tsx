@@ -133,7 +133,7 @@ export function ExperienceShell({ children }: { children: ReactNode }) {
         {children}
       </main>
       <Hud />
-      <Toasts />
+      {!reel && <Toasts />}
       <Tooltip />
       <AchievementsPanel />
       <FixBro />

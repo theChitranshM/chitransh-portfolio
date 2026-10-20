@@ -56,7 +56,7 @@ export function ChapterText({
     <div
       className={`absolute inset-x-0 bottom-0 flex min-h-[40svh] items-end bg-[linear-gradient(0deg,rgba(20,13,9,0.94)_0%,rgba(20,13,9,0.78)_55%,transparent_100%)] px-5 pb-[calc(28px+var(--safe-bottom))] pt-20 wide:inset-y-0 wide:min-h-0 wide:w-[50vw] wide:items-center wide:pb-0 wide:pt-0 ${side} ${className}`}
     >
-      <div className="pointer-events-auto max-w-[30rem]" data-reveal-group>
+      <div className="pointer-events-none [&_a]:pointer-events-auto [&_button]:pointer-events-auto [&_input]:pointer-events-auto max-w-[30rem]" data-reveal-group>
         {label && (
           <p className="hud-label mb-3 text-amber" data-reveal>
             {label}

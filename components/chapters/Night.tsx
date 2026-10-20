@@ -7,7 +7,7 @@ export function Night() {
   return (
     <Chapter id="night" index={7} height={125} label="night">
       <div className="absolute inset-x-0 bottom-0 flex min-h-[52svh] flex-col justify-end bg-[linear-gradient(0deg,rgba(20,13,9,0.95)_0%,rgba(20,13,9,0.75)_60%,transparent_100%)] px-5 pb-[calc(22px+var(--safe-bottom))] pt-16 wide:inset-0 wide:min-h-0 wide:items-center wide:justify-center wide:bg-[radial-gradient(ellipse_at_center,rgba(20,13,9,0.82)_0%,rgba(20,13,9,0.5)_45%,transparent_75%)] wide:pb-0 wide:text-center">
-        <div className="pointer-events-auto wide:flex wide:flex-col wide:items-center" data-reveal-group>
+        <div className="pointer-events-none [&_a]:pointer-events-auto [&_button]:pointer-events-auto [&_input]:pointer-events-auto wide:flex wide:flex-col wide:items-center" data-reveal-group>
           <p className="hud-label mb-4 text-crema" data-reveal>
             {n.kicker}
           </p>

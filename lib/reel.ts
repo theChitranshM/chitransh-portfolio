@@ -19,11 +19,11 @@ export function startReel() {
   const at = (i: number, extra = 0) => Math.min(max, (tops[i] ?? 0) + extra * vh);
 
   const proxy = { y: 0 };
-  const tl = gsap.timeline({ delay: 0.6, onUpdate: () => scrollToY(proxy.y, { immediate: true }) });
+  const tl = gsap.timeline({ delay: 1.2, onUpdate: () => scrollToY(proxy.y, { immediate: true }) });
   const seg = (to: number, frac: number, ease = "power2.inOut") => tl.to(proxy, { y: to, duration: dur * frac, ease });
   const hold = (frac: number) => tl.to({}, { duration: dur * frac });
 
-  hold(0.07); // hero
+  hold(0.1); // hero
   seg(at(3, 0.25), 0.12); // into the laptop
   hold(0.11);
   seg(at(6, 0.2), 0.16, "power1.inOut"); // receipt, polaroids, twin
@@ -31,7 +31,7 @@ export function startReel() {
   hold(0.2);
   seg(max, 0.14);
   hold(Math.max(1 / dur, 0.2));
-  tl.call(() => useStore.getState().triggerFixBro(), [], dur * 0.7 + 0.6);
+  tl.call(() => useStore.getState().triggerFixBro(), [], dur * 0.7 + 1.2);
 
   return () => {
     tl.kill();

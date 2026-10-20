@@ -15,8 +15,8 @@ const lines: ReactNode[] = [
   <div key="r1">{rule}</div>,
   ...site.experience.flatMap((e) => [
     <div key={`${e.company}-a`} className="flex justify-between gap-3 pt-1">
-      <span>1x {e.receiptRole}</span>
-      <span className="shrink-0 text-right lowercase">{e.company}</span>
+      <span className="min-w-0 flex-1">1x {e.receiptRole}</span>
+      <span className="max-w-[46%] text-right lowercase">{e.company}</span>
     </div>,
     <div key={`${e.company}-b`} className="pl-[3ch] text-[11px] text-espresso/65">
       {e.dates.toLowerCase().replace("present", "now")}
@@ -47,10 +47,12 @@ export function ReceiptStrip() {
   const printed = useRef(false);
   const scroller = useRef<HTMLDivElement>(null);
 
-  // hide lines until the chapter is reached (server render shows everything for no-JS)
+  // hide lines until the chapter is reached (server render shows everything for no-JS).
+  // reduced motion: the whole receipt, no printing. The flag can arrive after first mount.
   useEffect(() => {
-     
-    if (!printed.current && !reduced) setShown(0);
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- sync with the reduced-motion flag
+    if (reduced) setShown(lines.length);
+    else if (!printed.current) setShown(0);
   }, [reduced]);
 
   useEffect(() => {
