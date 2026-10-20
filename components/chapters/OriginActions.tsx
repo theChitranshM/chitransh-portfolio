@@ -27,6 +27,11 @@ export function OriginActions() {
       >
         🏛️ laurel
       </button>
+      {site.showSneakers && (
+        <button type="button" className={chipClass} onClick={() => setTooltip({ id: "sneakers", text: site.sneakers })}>
+          👟 sneakers
+        </button>
+      )}
     </div>
   );
 }

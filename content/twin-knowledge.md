@@ -63,6 +63,7 @@
 - recruiter mode is the 30-second version: /recruiter. the resume is there too.
 
 ## also
+- has about 40 pairs of sneakers. none of them help him code.
 - makes tech comedy reels on instagram: @chitranshmotwani.
 
 ## contact

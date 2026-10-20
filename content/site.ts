@@ -141,8 +141,8 @@ export const site = {
     refilled: "refilled. back to 100%.",
   },
 
-  sneakers: "~40 pairs. zero of them help me code.", // TODO(chitransh): confirm you're fine showing this
-  showSneakers: false,
+  sneakers: "~40 pairs. zero of them help me code.", // confirmed by chitransh
+  showSneakers: true,
 
   consoleMessage: "hey. if you opened devtools on a portfolio, we should talk. email me: ",
 
