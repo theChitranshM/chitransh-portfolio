@@ -102,7 +102,7 @@ export async function POST(req: Request) {
   // 1. Vercel AI Gateway with the project's own OIDC token (free monthly credit, no key to manage)
   // 2. ANTHROPIC_API_KEY, if one is ever added
   // Neither available (or either fails)? The twin answers from canned replies.
-  const oidc = req.headers.get("x-vercel-oidc-token") || process.env.VERCEL_OIDC_TOKEN;
+  const oidc = process.env.AI_GATEWAY_API_KEY || req.headers.get("x-vercel-oidc-token") || process.env.VERCEL_OIDC_TOKEN;
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey && !oidc) {
     return new Response(fallbackStream(fallbackAnswer(last)), { headers: headers("fallback") });
