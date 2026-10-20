@@ -36,6 +36,8 @@ type State = {
   lowWarned: boolean;
   // flow
   loaded: boolean;
+  /** 0..1, real load stages for the loader */
+  loadProgress: number;
   entered: boolean;
   reel: boolean;
   reducedMotion: boolean;
@@ -58,6 +60,7 @@ type State = {
   setScroll: (progress: number, chapter: number, chapterFloat: number) => void;
   refill: () => void;
   setLoaded: (v: boolean) => void;
+  setLoadProgress: (v: number) => void;
   enter: () => void;
   setQuality: (q: Quality) => void;
   setPortrait: (v: boolean) => void;
@@ -87,6 +90,7 @@ export const useStore = create<State>((set, get) => ({
   refilling: false,
   lowWarned: false,
   loaded: false,
+  loadProgress: 0.05,
   entered: false,
   reel: false,
   reducedMotion: false,
@@ -151,7 +155,8 @@ export const useStore = create<State>((set, get) => ({
     requestAnimationFrame(step);
   },
 
-  setLoaded: (v) => set({ loaded: v }),
+  setLoaded: (v) => set(v ? { loaded: true, loadProgress: 1 } : { loaded: false }),
+  setLoadProgress: (v) => set({ loadProgress: Math.max(get().loadProgress, v) }),
   enter: () => {
     if (get().entered) return;
     set({ entered: true });

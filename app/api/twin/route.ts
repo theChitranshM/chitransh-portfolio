@@ -92,18 +92,25 @@ export async function POST(req: Request) {
 
   const last = messages[messages.length - 1].content;
 
-  // no key: the site still works, the twin answers from canned replies
-  if (!process.env.ANTHROPIC_API_KEY) {
+  // Two ways to reach Claude, cheapest first:
+  // 1. Vercel AI Gateway with the project's own OIDC token (free monthly credit, no key to manage)
+  // 2. ANTHROPIC_API_KEY, if one is ever added
+  // Neither available (or either fails)? The twin answers from canned replies.
+  const oidc = req.headers.get("x-vercel-oidc-token") || process.env.VERCEL_OIDC_TOKEN;
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey && !oidc) {
     return new Response(fallbackStream(fallbackAnswer(last)), { headers: headers("fallback") });
   }
-
-  const client = new Anthropic();
+  const viaGateway = !apiKey;
+  const client = viaGateway
+    ? new Anthropic({ apiKey: oidc!, baseURL: "https://ai-gateway.vercel.sh", maxRetries: 0 })
+    : new Anthropic({ apiKey });
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
       let sent = 0;
       try {
         const reply = client.messages.stream({
-          model: MODEL,
+          model: viaGateway ? `anthropic/${MODEL}` : MODEL,
           max_tokens: 300,
           // short chat replies: low effort, no thinking, so all 300 tokens go to the answer
           thinking: { type: "disabled" },
@@ -130,5 +137,5 @@ export async function POST(req: Request) {
     },
   });
 
-  return new Response(stream, { headers: headers("claude") });
+  return new Response(stream, { headers: headers(viaGateway ? "gateway" : "claude") });
 }

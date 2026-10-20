@@ -20,6 +20,7 @@ function Grinder() {
 
 export function Loader() {
   const loaded = useStore((s) => s.loaded);
+  const progress = useStore((s) => Math.round(s.loadProgress * 100));
   const entered = useStore((s) => s.entered);
   const reel = useStore((s) => s.reel);
   const enter = useStore((s) => s.enter);
@@ -86,7 +87,11 @@ export function Loader() {
           </li>
         ))}
       </ul>
-      <div className="mt-8 h-14">
+      <div className="mt-6 h-[2px] w-[min(88vw,360px)] overflow-hidden rounded-full bg-mocha/60" role="progressbar" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100} aria-label="loading the scene">
+        <div className="h-full bg-amber transition-[width] duration-500" style={{ width: `${progress}%` }} />
+      </div>
+      <p className="mt-2 font-mono text-[11px] text-crema/60">{progress}%</p>
+      <div className="mt-6 h-14">
         {ready && !reel && (
           <button
             type="button"

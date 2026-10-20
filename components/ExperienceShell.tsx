@@ -89,6 +89,7 @@ export function ExperienceShell({ children }: { children: ReactNode }) {
         return;
       }
       st.setQuality(q);
+      st.setLoadProgress(0.3);
       if (q === "none") st.setLoaded(true);
       setReady(true);
     });

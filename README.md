@@ -2,7 +2,7 @@
 
 one evening at my desk in vancouver, 4:47 pm to 1:12 am, as a website. scroll and the clock moves, the sun sets behind the north shore, the city lights come on and the caffeine meter drains. click the espresso machine to refill it. there's an AI twin of me on the laptop. it replies faster than i do 😭
 
-**Live:** TODO(live-url) · **Recruiter mode** (the 30-second version, no 3D): TODO(live-url)/recruiter
+**Live:** https://chitransh-portfolio-brown.vercel.app · **Recruiter mode** (the 30-second version, no 3D): https://chitransh-portfolio-brown.vercel.app/recruiter
 
 ## Stack
 
@@ -30,11 +30,9 @@ Then open http://localhost:3000. Useful URL flags:
 
 ## The AI twin
 
-```bash
-cp .env.example .env.local
-```
+On Vercel the twin reaches Claude through **Vercel AI Gateway** using the project's built-in OIDC token: no API key to manage. The gateway's free monthly credit unlocks once a card is on file in Vercel (AI Gateway tab); the card is only charged if you buy credits or enable auto top-up. Until then, or if the gateway ever fails, the twin answers from canned replies in `content/twin-fallback.ts`, so the site always works.
 
-Add `ANTHROPIC_API_KEY` to `.env.local` (and to the Vercel project for production). Without a key the twin still works: it answers from canned replies in `content/twin-fallback.ts`. Set a monthly spend limit in the Anthropic Console.
+Prefer your own Anthropic key? Set `ANTHROPIC_API_KEY` and it takes priority. Set a monthly spend limit in the Anthropic Console.
 
 The twin is rate limited to 15 messages per IP per 10 minutes. That limit is in memory per server instance; set `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` to share it across instances. Message contents are never logged or stored.
 

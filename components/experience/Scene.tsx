@@ -41,6 +41,9 @@ function Crossfade() {
   return <div aria-hidden className={`pointer-events-none fixed inset-0 z-[2] bg-espresso ${flash ? "opacity-100" : "opacity-0 transition-opacity duration-500"}`} />;
 }
 
+// the 3D chunk has arrived
+useStore.getState().setLoadProgress(0.7);
+
 export default function Scene() {
   const quality = useStore((s) => s.quality);
   const setQuality = useStore((s) => s.setQuality);
