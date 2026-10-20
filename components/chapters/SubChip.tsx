@@ -11,7 +11,7 @@ export function SubChip() {
       <button
         type="button"
         className={chipClass}
-        aria-label="about the mini student union building"
+        aria-label="the SUB: the mini student union building"
         onClick={() => setTooltip({ id: "sub", text: site.ticket.subTooltip })}
       >
         🏛 the SUB

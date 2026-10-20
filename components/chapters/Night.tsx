@@ -18,7 +18,7 @@ export function Night() {
             {n.body}
           </p>
           <NightActions />
-          <p className="mt-8 font-mono text-[11px] leading-relaxed text-milk/45" data-reveal>
+          <p className="mt-8 font-mono text-[11px] leading-relaxed text-milk/60" data-reveal>
             {n.footer}
           </p>
         </div>

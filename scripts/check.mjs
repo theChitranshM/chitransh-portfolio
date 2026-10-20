@@ -91,7 +91,7 @@ await page.screenshot({ path: "shots/check-dialed-in.png" });
 await page.reload({ waitUntil: "networkidle" });
 await page.getByRole("button", { name: /pull the shot/ }).click({ timeout: 20000 });
 await page.waitForTimeout(1000);
-ok("achievements persist across reload", (await page.getByRole("button", { name: /achievements: 8 of 8/ }).count()) > 0);
+ok("achievements persist across reload", (await page.getByRole("button", { name: /8\/8 achievements/ }).count()) > 0);
 
 console.log(results.join("\n"));
 console.log(errors.length ? `\nconsole errors:\n  ${[...new Set(errors)].join("\n  ")}` : "\nno console errors");

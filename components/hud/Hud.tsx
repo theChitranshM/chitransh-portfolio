@@ -29,7 +29,7 @@ export function SoundToggle() {
   const on = useStore((s) => s.sound);
   const toggle = useStore((s) => s.toggleSound);
   return (
-    <button type="button" onClick={toggle} className={pill} aria-pressed={on} aria-label={on ? "turn sound off" : "turn sound on"}>
+    <button type="button" onClick={toggle} className={pill} aria-pressed={on}>
       <span aria-hidden className="mr-1.5 flex h-3 items-end gap-[2px]">
         {[0.5, 1, 0.7].map((h, i) => (
           <span
@@ -64,7 +64,7 @@ export function CaffeineMeter() {
       className={`pointer-events-auto flex items-center gap-2.5 rounded-full border bg-espresso/50 py-1.5 pl-2.5 pr-3.5 backdrop-blur-md transition-colors ${
         low ? "animate-pulse border-cherry/70" : "border-milk/20 hover:border-amber"
       }`}
-      aria-label={`caffeine ${caffeine} percent. click to refill`}
+      aria-label={`caffeine ${caffeine}%, click to refill`}
     >
       <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden>
         <path d="M4 8h13v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V8z" fill="none" stroke="#E9C9A1" strokeWidth="1.6" />
@@ -99,7 +99,7 @@ export function AchievementsCounter() {
       type="button"
       onClick={() => setPanelOpen(true)}
       className="pointer-events-auto whitespace-nowrap rounded-full border border-agent/40 bg-espresso/50 px-2.5 py-1 font-mono text-[11px] text-agent backdrop-blur-md hover:bg-agent hover:text-espresso"
-      aria-label={`achievements: ${count} of ${achievements.length}. open the list`}
+      aria-label={`${count}/${achievements.length} achievements, open the list`}
     >
       🏆 {count}/{achievements.length}
     </button>
@@ -131,7 +131,7 @@ export function ChapterNav() {
                 type="button"
                 onClick={() => scrollToChapter(i)}
                 aria-current={active === i ? "step" : undefined}
-                className="group flex items-center gap-2 font-mono text-[10.5px] uppercase tracking-[0.14em] text-milk/40 transition-colors hover:text-milk aria-[current=step]:text-agent"
+                className="group flex items-center gap-2 font-mono text-[10.5px] uppercase tracking-[0.14em] text-milk/60 transition-colors hover:text-milk aria-[current=step]:text-agent"
               >
                 <span className="opacity-0 transition-opacity group-hover:opacity-100 group-aria-[current=step]:opacity-100">{c.label}</span>
                 <span className="h-[2px] w-3 rounded-full bg-current transition-all group-aria-[current=step]:w-6" />

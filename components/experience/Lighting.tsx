@@ -3,10 +3,10 @@
 import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-import { Environment, Lightformer } from "@react-three/drei";
 import { useStore } from "@/lib/store";
 import { lightsAt } from "@/lib/time";
 import { qualitySettings } from "@/lib/quality";
+import { LocalEnvironment } from "./LocalEnvironment";
 
 const sunWarm = new THREE.Color("#ffc27a");
 const sunLate = new THREE.Color("#ff7a4a");
@@ -59,13 +59,7 @@ export function Lighting() {
   return (
     <>
       {/* a tiny local env map so metal and glass have something to reflect (no HDR download) */}
-      {quality !== "low" && (
-        <Environment frames={1} resolution={64} environmentIntensity={0.35}>
-          <Lightformer form="rect" intensity={3} color="#ffb547" position={[0, 2, -6]} scale={[8, 3, 1]} />
-          <Lightformer form="rect" intensity={1.2} color="#ffe2c4" position={[0, 6, 2]} rotation-x={Math.PI / 2} scale={[8, 8, 1]} />
-          <Lightformer form="rect" intensity={0.6} color="#9fb0ff" position={[6, 2, 2]} rotation-y={-Math.PI / 2} scale={[6, 3, 1]} />
-        </Environment>
-      )}
+      {quality !== "low" && <LocalEnvironment intensity={0.35} />}
       <hemisphereLight ref={hemi} args={["#ffd9b0", "#2a1a12", 0.9]} />
       <directionalLight
         ref={sun}

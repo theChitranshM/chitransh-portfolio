@@ -107,7 +107,7 @@ export function TwinPanel() {
         <h2 id="twin-title" className="text-[12px] uppercase tracking-[0.12em] text-agent">
           {t.label}
         </h2>
-        <span className="ml-auto text-[11px] text-crema/40">
+        <span className="ml-auto text-[11px] text-crema/60">
           {Math.min(sent, t.maxMessages)}/{t.maxMessages}
         </span>
       </div>
@@ -179,7 +179,7 @@ export function TwinPanel() {
           placeholder={limited ? t.limit : t.placeholder}
           disabled={limited}
           autoComplete="off"
-          className="min-w-0 flex-1 bg-transparent text-[16px] text-milk placeholder:text-milk/35 focus:outline-none wide:text-[14px]"
+          className="min-w-0 flex-1 bg-transparent text-[16px] text-milk placeholder:text-milk/50 focus:outline-none wide:text-[14px]"
         />
         <button
           type="submit"
@@ -189,7 +189,7 @@ export function TwinPanel() {
           send
         </button>
       </form>
-      <p className="shrink-0 px-4 pb-[calc(10px+var(--safe-bottom))] text-[10.5px] text-milk/40 wide:pb-3">{t.disclaimer}</p>
+      <p className="shrink-0 px-4 pb-[calc(10px+var(--safe-bottom))] text-[10.5px] text-milk/60 wide:pb-3">{t.disclaimer}</p>
     </div>
   );
 }

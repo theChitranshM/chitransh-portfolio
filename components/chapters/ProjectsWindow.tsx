@@ -59,7 +59,7 @@ export function ProjectsWindow() {
       <div className="flex min-h-0 flex-1 flex-col wide:flex-row">
         {/* sidebar (segmented control on phones) */}
         <nav aria-label="project folders" className="flex shrink-0 gap-1 border-b border-mocha/50 p-2 wide:w-44 wide:flex-col wide:border-b-0 wide:border-r wide:p-3">
-          <p className="hidden px-2 pb-1 font-mono text-[10px] uppercase tracking-[0.14em] text-crema/45 wide:block">folders</p>
+          <p className="hidden px-2 pb-1 font-mono text-[10px] uppercase tracking-[0.14em] text-crema/60 wide:block">folders</p>
           {groups.map((g) => (
             <button
               key={g.id}
@@ -72,7 +72,7 @@ export function ProjectsWindow() {
               className="flex flex-1 items-center justify-between gap-3 rounded-md px-3 py-2 text-left font-mono text-[13px] text-milk/80 transition-colors hover:bg-mocha/40 aria-pressed:bg-mocha/70 aria-pressed:text-milk wide:flex-none"
             >
               <span>📁 {g.label}</span>
-              <span className="text-[11px] text-crema/50">{g.items.length}</span>
+              <span className="text-[11px] text-crema/60">{g.items.length}</span>
             </button>
           ))}
         </nav>

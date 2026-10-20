@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { PerformanceMonitor } from "@react-three/drei";
 import * as THREE from "three";
@@ -10,7 +10,9 @@ import { CameraRig } from "./CameraRig";
 import { Lighting } from "./Lighting";
 import { Sky } from "./Sky";
 import { Room } from "./Room";
-import { Effects } from "./Effects";
+
+// post-processing (bloom, vignette) only ships to high-tier devices
+const Effects = lazy(() => import("./Effects").then((m) => ({ default: m.Effects })));
 
 /** tells the loader the scene has actually drawn a frame */
 function ReadySignal() {
@@ -42,12 +44,15 @@ function Crossfade() {
 export default function Scene() {
   const quality = useStore((s) => s.quality);
   const setQuality = useStore((s) => s.setQuality);
+  // the loader covers the scene: draw once (compile + ready signal), loop only after "pull the shot"
+  const entered = useStore((s) => s.entered);
   const q = qualitySettings[quality === "none" ? "low" : quality];
 
   return (
     <>
       <div aria-hidden className="fixed inset-0 z-[1]" style={{ touchAction: "pan-y" }}>
         <Canvas
+          frameloop={entered ? "always" : "demand"}
           dpr={q.dpr}
           shadows={q.shadows ? "soft" : false}
           gl={{ antialias: quality !== "low", powerPreference: "high-performance", alpha: false }}
@@ -70,7 +75,11 @@ export default function Scene() {
             <Lighting />
             <Sky />
             <Room />
-            {q.post && <Effects />}
+            {q.post && entered && (
+              <Suspense fallback={null}>
+                <Effects />
+              </Suspense>
+            )}
             <ReadySignal />
           </Suspense>
         </Canvas>
