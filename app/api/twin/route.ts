@@ -5,6 +5,12 @@ import { fallbackAnswer } from "@/content/twin-fallback";
 import { allow } from "@/lib/rateLimit";
 
 const MODEL = "claude-haiku-5-5";
+// Through Vercel AI Gateway: zero-priced models first (they cost $0, not even free credit),
+// then Claude Haiku on the gateway's free monthly credit. Override with TWIN_MODELS="a,b,c".
+const GATEWAY_MODELS = (process.env.TWIN_MODELS || "nvidia/nemotron-3.5-lightning-free,reflection/beam-free,anthropic/claude-haiku-5-5")
+  .split(",")
+  .map((m) => m.trim())
+  .filter(Boolean);
 const MAX_MESSAGES = 10;
 const MAX_CHARS = 500;
 
@@ -105,35 +111,43 @@ export async function POST(req: Request) {
   const client = viaGateway
     ? new Anthropic({ apiKey: oidc!, baseURL: "https://ai-gateway.vercel.sh", maxRetries: 0 })
     : new Anthropic({ apiKey });
+  const models = viaGateway ? GATEWAY_MODELS : [MODEL];
+  let served = "fallback";
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
       let sent = 0;
-      try {
-        const reply = client.messages.stream({
-          model: viaGateway ? `anthropic/${MODEL}` : MODEL,
-          max_tokens: 300,
-          // short chat replies: low effort, no thinking, so all 300 tokens go to the answer
-          thinking: { type: "disabled" },
-          output_config: { effort: "low" },
-          system: [{ type: "text", text: SYSTEM, cache_control: { type: "ephemeral" } }],
-          messages,
-        });
-        for await (const event of reply) {
-          if (event.type === "content_block_delta" && event.delta.type === "text_delta") {
-            sent += event.delta.text.length;
-            controller.enqueue(encoder.encode(event.delta.text));
+      for (const model of models) {
+        try {
+          const anthropicModel = model.startsWith("anthropic/") || !viaGateway;
+          const reply = client.messages.stream({
+            model,
+            max_tokens: 300,
+            // Claude: short chat replies, low effort, no thinking. Other models get the plain request.
+            ...(anthropicModel ? { thinking: { type: "disabled" as const }, output_config: { effort: "low" as const } } : {}),
+            system: [{ type: "text", text: SYSTEM, cache_control: { type: "ephemeral" } }],
+            messages,
+          });
+          for await (const event of reply) {
+            if (event.type === "content_block_delta" && event.delta.type === "text_delta") {
+              sent += event.delta.text.length;
+              controller.enqueue(encoder.encode(event.delta.text));
+            }
           }
+          if (sent) {
+            served = model;
+            break;
+          }
+        } catch (error) {
+          // never log message contents; model + status only
+          const status = error instanceof Anthropic.APIError ? error.status : "network";
+          console.error(`twin: ${model} failed (${status})`);
+          if (sent) break; // already streaming: don't splice another model's answer in
         }
-        // Haiku has no server-side refusal fallback: a refusal before any text (or an empty reply) gets a canned answer
-        if (!sent) controller.enqueue(encoder.encode(fallbackAnswer(last)));
-      } catch (error) {
-        // never log message contents; status only
-        const status = error instanceof Anthropic.APIError ? error.status : "network";
-        console.error(`twin: anthropic error ${status}`);
-        if (!sent) controller.enqueue(encoder.encode(fallbackAnswer(last)));
-      } finally {
-        controller.close();
       }
+      // nothing worked (or a refusal before any text): canned answer
+      if (!sent) controller.enqueue(encoder.encode(fallbackAnswer(last)));
+      void served;
+      controller.close();
     },
   });
 

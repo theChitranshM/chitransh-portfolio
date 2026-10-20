@@ -30,7 +30,7 @@ Then open http://localhost:3000. Useful URL flags:
 
 ## The AI twin
 
-On Vercel the twin reaches Claude through **Vercel AI Gateway** using the project's built-in OIDC token: no API key to manage. The gateway's free monthly credit unlocks once a card is on file in Vercel (AI Gateway tab); the card is only charged if you buy credits or enable auto top-up. Until then, or if the gateway ever fails, the twin answers from canned replies in `content/twin-fallback.ts`, so the site always works.
+On Vercel the twin goes through **Vercel AI Gateway**: zero-priced models first (`nvidia/nemotron-3.5-lightning-free`, `reflection/beam-free`, $0 per message), then Claude Haiku on the free credit, set with `TWIN_MODELS`. It authenticates using the project's built-in OIDC token: no API key to manage. The gateway's free monthly credit unlocks once a card is on file in Vercel (AI Gateway tab); the card is only charged if you buy credits or enable auto top-up. Until then, or if the gateway ever fails, the twin answers from canned replies in `content/twin-fallback.ts`, so the site always works.
 
 Prefer your own Anthropic key? Set `ANTHROPIC_API_KEY` and it takes priority. Set a monthly spend limit in the Anthropic Console.
 
