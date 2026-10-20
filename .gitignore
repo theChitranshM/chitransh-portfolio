@@ -41,3 +41,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 shots/
+
+# the private brief (mentions client work): stays local
+BUILD.md

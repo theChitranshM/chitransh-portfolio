@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# dialed in
 
-## Getting Started
+one evening at my desk in vancouver, 4:47 pm to 1:12 am, as a website. scroll and the clock moves, the sun sets behind the north shore, the city lights come on and the caffeine meter drains. click the espresso machine to refill it. there's an AI twin of me on the laptop. it replies faster than i do 😭
 
-First, run the development server:
+**Live:** TODO(live-url) · **Recruiter mode** (the 30-second version, no 3D): TODO(live-url)/recruiter
+
+## Stack
+
+- Next.js 16 (App Router, Turbopack) + TypeScript + Tailwind CSS v4
+- three.js with React Three Fiber, drei and postprocessing. Every object in the room is built from primitives in code, no model files.
+- GSAP (ScrollTrigger, SplitText) + Lenis for the scroll story
+- zustand for state, detect-gpu for quality tiers
+- Claude API (`claude-haiku-5-5`) for the AI twin
+- Vercel hosting + Vercel Analytics
+
+## Run it locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open http://localhost:3000. Useful URL flags:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Flag | What it does |
+|---|---|
+| `/?quality=low` / `medium` / `high` | force a graphics tier |
+| `/?full=1` | open the experience even with reduced motion or no WebGL (otherwise those go to recruiter mode) |
+| `/?reel=1&dur=12` | auto-plays the whole evening for recording a portrait reel |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## The AI twin
 
-## Learn More
+```bash
+cp .env.example .env.local
+```
 
-To learn more about Next.js, take a look at the following resources:
+Add `ANTHROPIC_API_KEY` to `.env.local` (and to the Vercel project for production). Without a key the twin still works: it answers from canned replies in `content/twin-fallback.ts`. Set a monthly spend limit in the Anthropic Console.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The twin is rate limited to 15 messages per IP per 10 minutes. That limit is in memory per server instance; set `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` to share it across instances. Message contents are never logged or stored.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Editing the content
 
-## Deploy on Vercel
+Every fact and every line of copy lives in `content/`:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `site.ts`: all copy, experience, projects, leadership, links
+- `twin-knowledge.md`: everything the twin is allowed to know
+- `achievements.ts`: the 8 achievements
+- Event photos go in `public/photos/<name>.jpg`; uncomment the matching `photo` line in `site.ts`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Scripts
+
+| Command | What it does |
+|---|---|
+| `npm run resume` | prints `/recruiter` to `public/resume.pdf` with headless Chrome (start the site first) |
+| `node scripts/shots.mjs` | screenshots every chapter at 390×844 and 1440×900 |
+| `node scripts/check.mjs` | plays through the site and checks every achievement and easter egg |
+
+## Sounds
+
+Every sound (ambience, espresso pour, printer ticks, achievement chime, robot beep) is synthesized in the browser with the Web Audio API. No sample files, nothing to credit or license.
+
+## Credits
+
+Built with [Claude Code](https://claude.com/claude-code), three.js and too much espresso.
+
+## License
+
+The code is MIT licensed (see `LICENSE`). The copy, photos, name and likeness are © Chitransh Motwani and are not covered by the MIT license.

@@ -1,6 +1,6 @@
 # CLAUDE.md: "Dialed In", the portfolio of Chitransh Motwani
 
-`BUILD.md` is the full brief. Read it before big changes. Also read `AGENTS.md`: this is Next.js 16, check `node_modules/next/dist/docs/` before using an API from memory.
+`BUILD.md` is the full brief (local only, gitignored: it mentions client work). Read it before big changes if it exists. Also read `AGENTS.md`: this is Next.js 16, check `node_modules/next/dist/docs/` before using an API from memory.
 
 ## Rules
 1. **Facts only come from `content/`** (`site.ts`, `twin-knowledge.md`, `achievements.ts`). Never invent numbers, dates, employers, clients, results or skills. Unknowns stay `TODO(chitransh)`.
