@@ -14,7 +14,7 @@ const rules: Rule[] = [
     answer: "not something i talk about. ask me about AI agents instead, i'm way more fun there.",
   },
   {
-    keys: ["girlfriend", "boyfriend", "relationship", "religion", "politic", "astrology", "family", "health"],
+    keys: ["girlfriend", "boyfriend", "relationship", "dating", "date anyone", "single", "married", "crush", "religion", "politic", "astrology", "horoscope", "family", "parents", "health", "medication"],
     answer: "that's off the menu. i only know the work stuff. ask me about his projects?",
   },
   {
