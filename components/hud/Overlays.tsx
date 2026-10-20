@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { achievements, dialedIn } from "@/content/achievements";
 import { unlockedCount, useStore, type Toast } from "@/lib/store";
-import { stopScroll } from "@/lib/scroll";
+import { stopScroll } from "@/lib/scrollApi";
 
 function ToastItem({ toast }: { toast: Toast }) {
   const dismiss = useStore((s) => s.dismissToast);

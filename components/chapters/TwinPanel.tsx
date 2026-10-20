@@ -2,12 +2,14 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { site } from "@/content/site";
-import { fallbackAnswer } from "@/content/twin-fallback";
 import { useStore } from "@/lib/store";
 import { track } from "@/lib/analytics";
 
 type Msg = { role: "user" | "assistant"; content: string };
 const t = site.twin;
+
+// canned replies only matter when the API is unavailable (or in reel mode), so they load on demand
+const fallbackAnswer = async (q: string) => (await import("@/content/twin-fallback")).fallbackAnswer(q);
 
 async function streamText(text: string, onChunk: (s: string) => void, speed = 14) {
   for (let i = 0; i < text.length; i += 2) {
@@ -47,7 +49,7 @@ export function TwinPanel() {
       track("twin_message_sent", { count: history.filter((m) => m.role === "user").length });
 
       if (opts.demo) {
-        await streamText(fallbackAnswer(q), setLast, 22);
+        await streamText(await fallbackAnswer(q), setLast, 22);
         setBusy(false);
         return;
       }
@@ -71,10 +73,10 @@ export function TwinPanel() {
             acc += decoder.decode(value, { stream: true });
             setLast(acc);
           }
-          if (!acc.trim()) await streamText(fallbackAnswer(q), setLast);
+          if (!acc.trim()) await streamText(await fallbackAnswer(q), setLast);
         }
       } catch {
-        await streamText(fallbackAnswer(q), setLast);
+        await streamText(await fallbackAnswer(q), setLast);
       } finally {
         setBusy(false);
       }

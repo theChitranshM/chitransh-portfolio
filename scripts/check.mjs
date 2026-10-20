@@ -67,7 +67,7 @@ ok("polaroid closes on escape", !(await dialog.isVisible().catch(() => false)));
 await scrollTo("twin");
 await page.getByRole("button", { name: "best project?" }).click();
 await page.waitForTimeout(6000);
-const reply = await page.locator("#twin p").last().innerText().catch(() => "");
+const reply = await page.locator("#twin [aria-live] p").last().innerText().catch(() => "");
 ok("twin replies", reply.length > 20, reply.slice(0, 90));
 ok("twin achievement", (await unlocked()).includes("twin"));
 await page.screenshot({ path: "shots/check-twin.png" });

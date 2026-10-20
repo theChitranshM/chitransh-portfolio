@@ -7,7 +7,7 @@ import { RoundedBox } from "@react-three/drei";
 import * as THREE from "three";
 import { useStore } from "@/lib/store";
 import { palette } from "@/lib/palette";
-import { scrollToChapter } from "@/lib/scroll";
+import { scrollToChapter } from "@/lib/scrollApi";
 import { HoverOutline, Interactive, useCanvasTexture } from "../parts";
 
 const PAPER = 0.34;

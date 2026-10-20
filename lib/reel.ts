@@ -1,7 +1,7 @@
 "use client";
 
 import { gsap } from "gsap";
-import { chapterTops, scrollToY } from "./scroll";
+import { chapterTops, scrollToY } from "./scrollApi";
 import { useStore } from "./store";
 
 /**

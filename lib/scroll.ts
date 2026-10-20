@@ -1,26 +1,22 @@
 "use client";
 
+// The scroll engine: Lenis + ScrollTrigger feeding progress/chapter into the store.
+// Loaded with a dynamic import while the loader is up; UI code uses lib/scrollApi.ts.
 import Lenis from "lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useStore } from "./store";
+import { measureTops, setLenis } from "./scrollApi";
 
-let lenis: Lenis | null = null;
 let tops: number[] = [];
-
 const clamp = (v: number, a = 0, b = 1) => Math.min(b, Math.max(a, v));
-
-function measure() {
-  const sections = Array.from(document.querySelectorAll<HTMLElement>("[data-chapter]"));
-  tops = sections.map((s) => s.getBoundingClientRect().top + window.scrollY);
-}
 
 function update() {
   const y = window.scrollY;
   const vh = window.innerHeight;
   const max = Math.max(1, document.documentElement.scrollHeight - vh);
   const progress = clamp(y / max);
-  if (!tops.length) measure();
+  if (!tops.length) tops = measureTops();
   // camera: which section we're in + how far through it
   let i = 0;
   while (i < tops.length - 1 && y >= tops[i + 1] - 1) i++;
@@ -36,6 +32,7 @@ function update() {
 
 export function initScroll({ smooth }: { smooth: boolean }) {
   gsap.registerPlugin(ScrollTrigger);
+  let lenis: Lenis | null = null;
   const onTick = (time: number) => lenis?.raf(time * 1000);
 
   if (smooth) {
@@ -46,18 +43,18 @@ export function initScroll({ smooth }: { smooth: boolean }) {
     });
     gsap.ticker.add(onTick);
     gsap.ticker.lagSmoothing(0);
+    setLenis(lenis);
   } else {
     window.addEventListener("scroll", update, { passive: true });
   }
 
   const onRefresh = () => {
-    measure();
+    tops = measureTops();
     update();
   };
   ScrollTrigger.addEventListener("refresh", onRefresh);
   window.addEventListener("resize", onRefresh);
-  measure();
-  update();
+  onRefresh();
 
   return () => {
     ScrollTrigger.removeEventListener("refresh", onRefresh);
@@ -65,35 +62,6 @@ export function initScroll({ smooth }: { smooth: boolean }) {
     window.removeEventListener("scroll", update);
     gsap.ticker.remove(onTick);
     lenis?.destroy();
-    lenis = null;
+    setLenis(null);
   };
-}
-
-export function getLenis() {
-  return lenis;
-}
-
-export function stopScroll(stop: boolean) {
-  if (lenis) {
-    if (stop) lenis.stop();
-    else lenis.start();
-  }
-  document.documentElement.style.overflow = stop ? "hidden" : "";
-}
-
-export function scrollToChapter(index: number, opts: { immediate?: boolean; duration?: number } = {}) {
-  measure();
-  const y = tops[index] ?? 0;
-  if (lenis) lenis.scrollTo(y, { immediate: opts.immediate, duration: opts.duration ?? 1.4, force: true });
-  else window.scrollTo({ top: y, behavior: opts.immediate ? "auto" : "smooth" });
-}
-
-export function scrollToY(y: number, opts: { immediate?: boolean; duration?: number } = {}) {
-  if (lenis) lenis.scrollTo(y, { immediate: opts.immediate, duration: opts.duration, force: true });
-  else window.scrollTo({ top: y });
-}
-
-export function chapterTops() {
-  measure();
-  return tops.slice();
 }

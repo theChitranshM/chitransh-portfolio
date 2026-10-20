@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { site, type Leadership } from "@/content/site";
-import { stopScroll } from "@/lib/scroll";
+import { stopScroll } from "@/lib/scrollApi";
 import { useStore } from "@/lib/store";
 
 const tilts = [-3, 2, -1.5, 2.5, -2, 1.5];

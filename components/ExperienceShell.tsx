@@ -5,10 +5,8 @@ import { Component, useEffect, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { useStore } from "@/lib/store";
 import { detectQuality } from "@/lib/quality";
-import { initScroll, stopScroll } from "@/lib/scroll";
-import { setupReveals } from "@/lib/reveal";
+import { stopScroll } from "@/lib/scrollApi";
 import { listenForFix } from "@/lib/eggs";
-import { startReel } from "@/lib/reel";
 import { consoleHello } from "@/components/eggs/ConsoleHello";
 import { FixBro } from "@/components/eggs/FixBro";
 import { Confetti } from "@/components/eggs/Confetti";
@@ -31,6 +29,20 @@ class SceneBoundary extends Component<{ children: ReactNode }, { failed: boolean
   render() {
     return this.state.failed ? null : this.props.children;
   }
+}
+
+/** runs an effect whose code is loaded on demand; cleans up even if unmounted before it loads */
+function lazyEffect(load: () => Promise<() => void>) {
+  let cleanup: (() => void) | undefined;
+  let cancelled = false;
+  void load().then((fn) => {
+    if (cancelled) fn();
+    else cleanup = fn;
+  });
+  return () => {
+    cancelled = true;
+    cleanup?.();
+  };
 }
 
 function Sleepy() {
@@ -88,9 +100,10 @@ export function ExperienceShell({ children }: { children: ReactNode }) {
     };
   }, [router]);
 
+  // gsap, ScrollTrigger and Lenis load while the loader is up, not in the first bundle
   useEffect(() => {
     if (!ready) return;
-    return initScroll({ smooth: !reduced });
+    return lazyEffect(() => import("@/lib/scroll").then((m) => m.initScroll({ smooth: !reduced })));
   }, [ready, reduced]);
 
   useEffect(() => {
@@ -99,12 +112,12 @@ export function ExperienceShell({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!entered || reduced) return;
-    return setupReveals();
+    return lazyEffect(() => import("@/lib/reveal").then((m) => m.setupReveals()));
   }, [entered, reduced]);
 
   useEffect(() => {
     if (!entered || !reel) return;
-    return startReel();
+    return lazyEffect(() => import("@/lib/reel").then((m) => m.startReel()));
   }, [entered, reel]);
 
   return (

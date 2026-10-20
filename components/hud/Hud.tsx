@@ -6,7 +6,7 @@ import { chapters } from "@/content/site";
 import { achievements } from "@/content/achievements";
 import { unlockedCount, useStore } from "@/lib/store";
 import { formatClock } from "@/lib/time";
-import { scrollToChapter } from "@/lib/scroll";
+import { scrollToChapter } from "@/lib/scrollApi";
 import { track } from "@/lib/analytics";
 
 const pill =
