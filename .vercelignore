@@ -1,0 +1,5 @@
+BUILD.md
+shots
+.claude
+.env*
+!.env.example
