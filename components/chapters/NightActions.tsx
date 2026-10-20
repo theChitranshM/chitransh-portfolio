@@ -1,15 +1,14 @@
 "use client";
 
-import { useState } from "react";
 import { site } from "@/content/site";
 import { useStore } from "@/lib/store";
 import { track } from "@/lib/analytics";
+import { DoNotClick } from "@/components/eggs/DoNotClick";
 
 const base = "inline-flex min-h-[44px] items-center rounded-full border px-4 py-2 font-mono text-[13px] transition-colors";
 const btn = `${base} border-milk/25 text-milk hover:border-agent hover:text-agent`;
 
 export function NightActions() {
-  const [clicked, setClicked] = useState(false);
   const unlock = useStore((s) => s.unlock);
   const l = site.links;
   return (
@@ -40,16 +39,7 @@ export function NightActions() {
         </a>
       </div>
       <div>
-        <button
-          type="button"
-          onClick={() => {
-            setClicked(true);
-            unlock("reverse-psychologist");
-          }}
-          className="rounded-full bg-cherry px-3 py-1.5 font-mono text-[11px] font-medium text-espresso shadow-[0_0_24px_-4px_#FF5A4E] transition-transform active:scale-95"
-        >
-          {clicked ? site.night.doNotClickAfter : site.night.doNotClick}
-        </button>
+        <DoNotClick />
       </div>
     </div>
   );

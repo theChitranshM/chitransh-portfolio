@@ -13,7 +13,10 @@ import { Confetti } from "@/components/eggs/Confetti";
 import { Backdrop } from "@/components/experience/Backdrop";
 import { Hud } from "@/components/hud/Hud";
 import { Loader } from "@/components/hud/Loader";
-import { AchievementsPanel, Cursor, Toasts, Tooltip } from "@/components/hud/Overlays";
+import { Toasts } from "@/components/hud/AchievementToast";
+import { AchievementsPanel } from "@/components/hud/AchievementsPanel";
+import { Cursor } from "@/components/hud/Cursor";
+import { Tooltip } from "@/components/hud/Tooltip";
 
 // the whole 3D chunk loads only on the client, after the shell
 const Scene = dynamic(() => import("@/components/experience/Scene"), { ssr: false });
